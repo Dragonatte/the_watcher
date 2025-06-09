@@ -16,7 +16,7 @@ const CommentCardSkeleton: React.FC = (): React.JSX.Element => (
       </span>
     </CardHeader>
     <CardBody>
-        <Skeleton className={"h-12 w-full rounded-2xl"} />
+      <Skeleton className={"h-12 w-full rounded-2xl"} />
     </CardBody>
     <CardFooter>
       <p>

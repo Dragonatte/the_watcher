@@ -12,6 +12,7 @@ import { Movie } from "@/model/Movie.model";
 import { TVShow } from "@/model/TVShow.model";
 import { title } from "@/components/primitives";
 import GenreChip from "@/components/details/atoms/GenreChip";
+import { useBackgroundImg } from "@/context/BackgroundImgContext";
 
 interface ItemInfoProps {
   item: Movie | TVShow;
@@ -19,6 +20,12 @@ interface ItemInfoProps {
 }
 
 const ItemInfo: FC<ItemInfoProps> = ({ item, type }: ItemInfoProps) => {
+  const { setBackgroundImg } = useBackgroundImg();
+
+  setBackgroundImg(
+    s.movies.getImageUrl(item.backdrop_path!) ||
+      s.movies.getImageUrl(item.poster_path!),
+  );
   const itemTitle: string =
     type === "movie" ? (item as Movie).title : (item as TVShow).name;
   const releasedDate: string =
@@ -49,11 +56,12 @@ const ItemInfo: FC<ItemInfoProps> = ({ item, type }: ItemInfoProps) => {
         </div>
         <div className="flex items-center gap-4 mb-8 text-xs md:text-base">
           <Chip
+            className={"p-2"}
             size={"sm"}
             startContent={
               <Star className={"fill-amber-400 size-3 md:size-4.5"} />
             }
-            variant="flat"
+            variant="solid"
           >
             {item.vote_average.toFixed(2)}/10{" "}
             <span className={"text-default-500"}>
@@ -62,11 +70,12 @@ const ItemInfo: FC<ItemInfoProps> = ({ item, type }: ItemInfoProps) => {
           </Chip>
           {type === "movie" ? (
             <Chip
+              className={"p-2"}
               size={"sm"}
               startContent={
                 <ClockIcon className={"fill-default-900 size-3 md:size-4.5"} />
               }
-              variant="flat"
+              variant="solid"
             >
               {(item as Movie).runtime} mins.
             </Chip>
@@ -74,11 +83,12 @@ const ItemInfo: FC<ItemInfoProps> = ({ item, type }: ItemInfoProps) => {
             ""
           )}
           <Chip
+            className={"p-2"}
             size={"sm"}
             startContent={
               <CalendarIcon className={"fill-default-900 size-3 md:size-4.5"} />
             }
-            variant="flat"
+            variant="solid"
           >
             {new Date(releasedDate).toLocaleDateString("es-ES", {
               year: "numeric",

@@ -1,12 +1,13 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+import React, { Suspense } from "react";
 
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import React from "react";
+import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: {
@@ -40,9 +41,19 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          {children}
-        </Providers>
+        <ErrorBoundary
+          fallback={
+            <div className="text-red-500">Algo falló en el layout.</div>
+          }
+        >
+          <Suspense fallback={<p>Cargando...</p>}>
+            <Providers
+              themeProps={{ attribute: "class", defaultTheme: "dark" }}
+            >
+              {children}
+            </Providers>
+          </Suspense>
+        </ErrorBoundary>
       </body>
     </html>
   );
